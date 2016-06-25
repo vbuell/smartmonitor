@@ -1,0 +1,34 @@
+{% extends "template.html" %}
+
+{% block title %}mtop{% endblock %}
+
+{% block page_title %}Error codes{% endblock %}
+
+{% block sidebar_search %}{% endblock %}
+
+{% block sidebar_additions %}
+					<li><a href="/mtop/doc//" title="Home">Go to help</a></li>
+{% endblock %}
+
+{% block body %}
+<font size=-2>
+	
+    <p>
+    When internal error happens in the SmartWrapper's program flow, it collect the problem and try to investigate 
+    the source of the problem. This error code stored in the datastore and could be visualized by mtop utility.</p> 
+    
+    <p>
+    There are three errors codes that should tell you the type of internal problems.</p>
+    
+    <table>
+    <tr><th style="border-bottom:1px solid;">Code</th><th style="border-bottom:1px solid;">Description</th><th style="border-bottom:1px solid;">Symbol used in mtop</th></tr>
+    <tr><td><b>CONN</b></td><td>The problem with connectivity (SSH).</td><td>'<b>!</b>'</td></tr>
+    <tr><td><b>IO</b></td><td>Problems with file read/write operations. Output/Input file.</td><td>'<b>!</b>'</td></tr>
+    <tr><td><b>TIMEOUT</b></td><td>code</td><td>'<b>t</b>'</td></tr>
+    <tr><td><b>KILLED</b></td><td>The SmartWrapper was killed by SIGTERM signal. It 
+    happens when SmartWrapper is managed or supervised by host system.</td><td>'<b>K</b>'</td></tr>
+    <tr><td><b>TRGG</b></td><td>An exception was risen in the trigger's code.</td><td>'<b>!</b>'</td></tr>
+    </table> 
+
+</font>
+{% endblock %}

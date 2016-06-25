@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/static/global.css" type="text/css" />
+<style type="text/css">
+</style>
+<!--
+#page { background: url("http://s2.wordpress.com/wp-content/themes/default/images/kubrickbg.gif") repeat-y top; border: none; }
+body { background: url("http://s1.wordpress.com/wp-content/themes/default/images/kubrickbgcolor.gif"); }
+#header { background: url("http://s3.wordpress.com/wp-content/themes/default/images/kubrickheader.gif") no-repeat bottom center; }
+#footer { background: url("http://s1.wordpress.com/wp-content/themes/default/images/kubrickfooter.gif") no-repeat bottom; border: none;}
+#header 	{ margin: 0 !important; margin: 0 0 0 1px; padding: 1px; height: 198px; width: 758px; }
+#headerimg 	{ margin: 7px 9px 0; height: 192px; width: 740px; }
+#headerimg h1 a, #headerimg h1 a:visited, #headerimg .description { color: ; }
+#headerimg h1 a, #headerimg .description { display:  }
+-->
+{% block head_additions %}{% endblock %}
+</head>
+
+<body>
+
+<div id="page">
+
+
+	<div id="header">
+		<div id="headerimg">
+			<h1>mtop</h1>
+			<div class="description">SmartMonitor status tracker</div>
+		</div>
+	</div>
+	<hr/>
+
+	<div id="content" class="narrowcolumn">
+	
+		
+		<div>
+			<h2>{% block page_title %}{% endblock %}</h2>
+			<small>{% block page_descruption %}{% endblock %}&nbsp;</small>
+
+			<div>
+			{% block body %}{% endblock %}
+			</div>
+
+{% comment %}
+			<p class="postmetadata">Go to <a href="">details page</a></p>
+{% endcomment %}
+		</div>
+		
+	</div>
+
+
+	<div id="sidebar">
+		<ul>
+{% block sidebar_search %}
+			<li>
+				<div>
+					<form id="searchform" name="searchform" method="get" action="/mtop/">
+						<input type="text" 
+							id="livesearch" 
+							name="filter" 
+							value="{% if filter %}{{filter}}{% else %}filter for monitors{% endif %}" 
+							onblur="this.value=(this.value==&#39;&#39;) ? &#39;filter for monitors&#39; : this.value;" 
+							onfocus="this.value=(this.value==&#39;filter for monitors&#39;) ? &#39;&#39; : this.value;" />
+						<input type="submit" id="searchsubmit" style="display: none;" value="Search" />
+					</form>
+				</div>
+			</li>
+{% endblock %}
+			
+{% block sidebar_pages %}
+			<li><h2>Navigation</h2>
+				<ul>
+					<li><a href="/mtop/" title="Home">Home</a></li>
+{% block sidebar_additions %}
+{% endblock %}
+				</ul>
+			</li>
+{% endblock %}
+
+{% comment %}
+			<li class="categories"><h2>Categories</h2>
+				<ul>
+					<li><a href="" title="View all posts">NFS</a> (10)</li>
+					<li><a href="" title="View all posts">CORE</a> (6)</li>
+					<li><a href="" title="View all posts">PERFMON</a> (16)</li>
+					<li><a href="" title="View all posts">UI</a> (12)</li>
+				</ul>
+			</li>
+{% endcomment %}
+		</ul>
+	</div>
+
+	<hr/>
+	
+	<div id="footer">
+		<p>
+			Version 0.11b | <a href="http://code.google.com/p/smartmonitor/">SmartMonitor home</a>
+{% comment %}
+			<a href="">All monitors (RSS)</a>(WIP)	
+{% endcomment %}
+		</p>
+	</div>
+</div>
+
+</body>
+</html>

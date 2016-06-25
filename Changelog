@@ -1,0 +1,47 @@
+
+
+Version: CVS
+
+- sw: fix: script execution errors (the working directory or the script
+    is absent or not accessible in the file system) doesn't generate 
+    outfile.
+- fix: str2date optimization
+- fix: line_to_obj optimized. 
+
+
+Version 0.11
+
+5-November-2009
+
+The most notable changes in this build are: 
+* SIGTERM signal handling. Now SmartWrapper can avoid cases of 
+    unsaved data when it was killed by AM.
+* New views added: measurement view, sample view and online 
+    documentation.
+
+Detailed changelog:    
+
+- mtop: Filter is case insensitive now.
+- mtop: killed (k), timeout (t) and internal error (!) statuses are added 
+    to the graph.
+- mtop-web: New page 'Sample view' added.
+- mtop-web: OFC Graphs are beautified.
+- mtop-web: Thresholds are showing on measurement graphs as red and blue 
+    lines (for critical and warning states accordingly).
+- mtop-web: Instant help available just-in-place using SmartWrapper 
+    documentation converted into html format. 
+- sw: SIGTERM signal handled to not loose the data when SW is killed.
+- sw: Code refactored.
+- sw: Status field added to history data store entries.
+- sw: 'jsonlib' module support added. Should improve performance for 
+    datastorage operations (jsonlib is fastest after cjson JSON parser 
+    implementation).
+- sw: Multiple deprecation warnings are suppressed to clear up output.
+- sw: Generated output file are now storing in the history data store. 
+
+
+Version 0.10
+
+30-Oktober-2009
+
+first public version of mtop utility

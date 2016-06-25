@@ -1,0 +1,73 @@
+.hidden{display:none;}
+.screen-reader-text{position:absolute;left:-1000em;}
+
+.leo-module{margin-bottom:20px;padding:0;width:100%;}
+.leo-module .header{background:#e8e8e8 url(http://static02.linkedin.com/img/bg/bg_module_top_v1_e8e8e8_900x27.png) no-repeat top right;color:#333;padding-right:8px;}
+.leo-module .header h1,.leo-module .header h2,.leo-module .header h3,.leo-module .header h4,.leo-module .header h5{background:url(http://static02.linkedin.com/img/bg/bg_module_top_v1_e8e8e8_900x27.png) no-repeat;padding:5px 5px 5px 10px;margin:0;}
+.leo-module .content{background:#fff;border:1px solid #ddd;border-width:0 1px 1px;-moz-border-radius-bottomleft:6px;-moz-border-radius-bottomright:6px;-webkit-border-bottom-left-radius:6px;-webkit-border-bottom-right-radius:6px;border-bottom-left-radius:6px;border-bottom-right-radius:6px;padding:6px 10px 8px 10px;zoom:1;}
+
+.leo-module.mod-action.error{background:#FFD0B8 url(/static/bg_module_action_600x800.gif) no-repeat right bottom;margin:0 0 20px;padding:0;}
+.leo-module.mod-action.blue{background:#DDF0F8 url(/static/bg_module_action_600x800.gif) no-repeat right bottom;margin:0 0 20px;padding:0;}
+.leo-module.mod-action.ok{background:#F0F8DD url(/static/bg_module_action_600x800.gif) no-repeat right bottom;margin:0 0 20px;padding:0;}
+.leo-module.mod-action.warning{background:#FFF9C9 url(/static/bg_module_action_600x800.gif) no-repeat right bottom;margin:0 0 20px;padding:0;}
+.leo-module.mod-action .header{background:url(/static/bg_module_action_600x800.gif) no-repeat right top;margin:0;padding:0 10px 0 0;}
+.leo-module.mod-action .header h1,.leo-module.mod-action .header h2,.leo-module.mod-action .header h3,.leo-module.mod-action .header h4,.leo-module.mod-action .header h5{background:url(/static/bg_module_action_600x800.gif) no-repeat left top;color:#069;}
+.leo-module.mod-action .header strong{background:url(http://static03.linkedin.com/img/icon/icon_lightbulb_10x17.gif) no-repeat;display:block;min-height:17px;padding-left:17px;}
+.leo-module.mod-action .content{background:url(/static/bg_module_action_600x800.gif) no-repeat 0 100%;border:none;-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;color:#333;margin:0 5px 0 0;overflow:hidden;padding:0 15px 20px 15px;*padding-bottom:10px;-ms-zoom:1;zoom:1;}
+
+.leo-module.mod-info{background:url(http://static01.linkedin.com/img/bg/bg_module_info_featured_1x113.gif) repeat-x top left;margin:0 0 20px;padding:0;}
+.leo-module.mod-info .header{background:url(/static/bg_module_action_600x800.gif) no-repeat top right;margin:0;padding:0 5px 0 0;}
+.leo-module.mod-info .header h1,.leo-module.mod-info .header h2,.leo-module.mod-info .header h3,.leo-module.mod-info .header h4,.leo-module.mod-info .header h5{background:url(/static/bg_module_action_600x800.gif) no-repeat top left;margin:0;padding:10px 10px 0 10px;}
+.leo-module.mod-info .header strong{background:url(http://static03.linkedin.com/img/icon/icon_lightbulb_10x17.gif) no-repeat;display:block;min-height:17px;padding-left:17px;}
+.leo-module.mod-info .content{background:transparent;border-color:#9acce6;margin-left:0;top:0;}
+.leo-module.mod-info.feature{background-image:url(img/bg/bg_module_info_featured_1x113.gif);}
+.leo-module.mod-info.feature .header{background-image:url(img/bg/bg_module_action_600x800.gif);}
+.leo-module.mod-info.feature .header h3{background-image:url(img/bg/bg_module_action_600x800.gif);}
+.leo-module.mod-info.feature .content{border-color:#9acce6;}
+
+div.special {
+  padding: .5em 1em 1em 1em;
+  margin: 0 0 1em;
+  background-color: #DAF3FC;
+  border:2px solid #d3ecf5;
+  border-radius:5px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+}
+
+div.special.error{
+  background-color: #FFD0B8;
+  border:2px solid #EFC0A8;
+}
+
+div.special.warning{
+  background-color: #FFF9C9;
+  border:2px solid #EFC0A8;
+}
+
+div.special.ok{
+  background-color: #F0F8DD;
+  border:2px solid #D0E8BD;
+}
+
+div.special p {
+  margin: .5em 0 0 0;
+}
+
+div.special ol {
+  margin: 0;
+}
+
+div.special ol li {
+  margin: 0;
+  padding: 0;
+}
+
+div.special h2,
+div.special h3 {
+  color:#669999;
+  font-size:1.2em;
+  border:none;
+  margin:0 0 .5em;
+  padding:0;
+}

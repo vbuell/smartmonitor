@@ -1,0 +1,86 @@
+{% extends "template.html" %}
+
+{% block title %}mtop{% endblock %}
+
+{% block page_title %}Sample: <a href="/mtop/monitor/{{ mon_id }}/">{{ mon_id }}</a> for {{ date }}{% endblock %}
+
+{% block head_additions %}
+    <script type="text/javascript" src="/static/swfobject.js"></script>
+    <script type="text/javascript" src="/static/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("span.spoiler").hide();
+	$('<a class="reveal">&nbsp;&nbsp;(Click to show)</a>').insertBefore('.spoiler');
+	$("a.reveal").click(function(){
+		$(this).parents("p").children("span.spoiler").fadeIn(2500);
+		$(this).parents("p").children("a.reveal").fadeOut(600);
+	});
+});
+
+</script>
+{% endblock %}
+
+{% block sidebar_search %}{% endblock %}
+
+{% block sidebar_additions %}
+					<li><a href="/mtop/monitor/{{ mon_id }}/" title="Home">Go to monitor view</a></li>
+{% endblock %}
+
+{% block body %}
+<br>
+<font size=-2>
+	Monitor id: <b><a href="/mtop/monitor/{{ mon_id }}/" title="Click to return to monitor view">{{ mon_id }}</a>&nbsp;&nbsp;&nbsp;</b>Date: <b>{{ date }}</b><br>
+	<br>
+    
+    <p>
+
+	{% ifequal health_stat "OK" %}
+	<div class="special ok"> 
+	  <h3>Monitor's health is {{health}}%</h3> 
+	  <p>Monitor's health is <strong>{{health}}%</strong>. It means that the monitor is in normal state.</p> 
+	</div> 
+    {% endifequal %} 
+    
+	{% ifequal health_stat "WARN" %}
+	<div class="special warning"> 
+	  <h3>Monitor's health is {{health}}%</h3> 
+	  <p>Monitor's health is <strong>{{health}}%</strong>. It means that the monitor is in warning state.</p> 
+	</div> 
+    {% endifequal %} 
+            
+	{% ifequal health_stat "ERR" %}
+	<div class="special error"> 
+	  <h3>Monitor's health is {{health}}%</h3> 
+	  <p>Monitor's health is <strong>{{health}}%</strong>. It means that the monitor is in critical state.</p>
+      {% if status %} 
+      <p>Error code is <strong>{{status}}</strong></p>
+      <p>Please analyse log file for this monitor. Refer to the guide to
+	    <a href="/mtop/doc/error_codes">Error codes</a>.
+	    Once you have got acquainted with source of the problem, see the
+	    <a href="/mtop/doc/troubleshooting">Troubleshouting section</a> for documentation about
+	    fixing such a problems of SmartWrapper.</p>
+	  {% else %} 
+      <p>Please see triggers for the monitor.</p>
+      {% endif %}
+	</div> 
+    {% endifequal %} 
+    
+
+    <p> 
+    Monitor's input data: 
+    <blockquote><pre>
+{{payload}}    
+    </pre></blockquote>
+	</span>
+	</p>
+
+    <p> 
+    Generated output file: 
+    <blockquote><pre>
+{{outfile}}    
+    </pre></blockquote>
+	</span>
+	</p>
+
+</font>
+{% endblock %}
