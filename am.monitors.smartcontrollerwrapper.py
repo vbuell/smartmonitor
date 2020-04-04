@@ -235,13 +235,13 @@ class SmartWrapper(object):
             if isinstance(check.get('threshold'), list):
                 for threshold in check.get('threshold'):
                     self.thresholds.append(threshold)
-            elif not isinstance(check.get('threshold'), type(None)):
+            elif check.get('threshold') is not None:
                 self.thresholds.append(check.get('threshold'))
             
             if isinstance(check.get('threshold-ref'), list):
                 for threshold_ref in check.get('threshold-ref'):
                     self.thresholds.append(self.get_threshold_by_name(threshold_ref))
-            elif not isinstance(check.get('threshold-ref'), type(None)):
+            elif check.get('threshold-ref') is not None:
                 self.thresholds.append(self.get_threshold_by_name(check.get('threshold-ref')))
                 
             logger.debug("Thresholds: " + str(self.thresholds))

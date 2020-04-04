@@ -18,7 +18,6 @@ import re
 import os
 from datetime import datetime, timedelta
 from core_parser import eval_number
-from strptime import str2date
 
 
 DATETIME_FORMAT = "%Y-%m-%d,%H:%M:%S"
@@ -149,7 +148,7 @@ class Storage(object):
     
     def line_to_obj(self, line, do_json=True):
         start_idx = line.find(" ")
-        dt = str2date(line[0:start_idx], DATETIME_FORMAT)
+        dt = datetime.fromisoformat(line[0:start_idx])
         
         m = self.re_pattern_entry.match(line[start_idx:])
         if m:
@@ -172,7 +171,7 @@ class Storage(object):
 
     def obj_to_line(self, object, health=None, stat=None):
 
-        str_out = str(datetime.utcnow().strftime(DATETIME_FORMAT)) + " " 
+        str_out = datetime.utcnow().isoformat() + " " 
 
         if json_module == "json":
             str_out += json.dumps(object)

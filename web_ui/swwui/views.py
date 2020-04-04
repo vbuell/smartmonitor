@@ -24,7 +24,7 @@ sys.path.append(datadir + "/..")
 
 from mtop import MTop
 from core_datastore import DATETIME_FORMAT
-from strptime import str2date
+from datetime import datetime
 
 
 class HtmlFormatter(object):
@@ -325,7 +325,7 @@ def map_health_to_status(health): # TODO: Move out from here
 
 def tick(request, mon_id="", dt=""):
     
-    date_time = str2date(dt, DATETIME_FORMAT)
+    date_time = datetime.fromisoformat(dt)
 
     data_entry = mtop.getDataForMonitor(mon_id, date_time)
     if not data_entry:
