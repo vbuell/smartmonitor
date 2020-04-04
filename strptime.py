@@ -47,13 +47,13 @@ class TimeParser:
                     spec = SPEC[spec]
                 pattern.append(spec)
         except KeyError:
-            raise ValueError, "unknown specificer: %s" % spec
+            raise ValueError("unknown specificer: %s" % spec)
         self.pattern = re.compile("(?i)" + string.join(pattern, ""))
     def match(self, daytime):
         # match time string
         match = self.pattern.match(daytime)
         if not match:
-            raise ValueError, "format mismatch"
+            raise ValueError("format mismatch")
         get = match.groupdict().get
         tm = [0] * 9
         # extract date elements
@@ -103,8 +103,8 @@ if __name__ == "__main__":
     # try it out
     import time
     import datetime
-    print str2date("2000-12-20,01:02:03", "%Y-%m-%d,%H:%M:%S")
-    print type(str2date("2000-12-20,01:02:03", "%Y-%m-%d,%H:%M:%S"))
+    print(str2date("2000-12-20,01:02:03", "%Y-%m-%d,%H:%M:%S"))
+    print(type(str2date("2000-12-20,01:02:03", "%Y-%m-%d,%H:%M:%S")))
 #    print time.mktime(str2date("2000-12-20 01:02:03", "%Y-%m-%d %H:%M:%S"))
 #    print type(time.mktime(str2date("2000-12-20 01:02:03", "%Y-%m-%d %H:%M:%S")))
     

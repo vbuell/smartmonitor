@@ -49,7 +49,7 @@ class MonitorOutputParser(object):
         if isinstance(regex, list):
             for regex_element in regex:
                 self.regex.append(regex_element)
-        elif not isinstance(regex, types.NoneType):
+        elif not isinstance(regex, type(None)):
             self.regex.append(regex)
 
     def parse(self, filename=None, lines=None):
@@ -128,11 +128,11 @@ class MonitorOutputParser(object):
                         try:
                             key, value = line.split(self.delimiter)
                             objects_dict[key.strip()] = eval_number(value.strip())
-                        except ValueError, e:
-                            print line
+                        except ValueError as e:
+                            print(line)
                             logging.exception(e)
-                        except Exception, e:
-                            print line
+                        except Exception as e:
+                            print(line)
                             logging.exception(e)
 
         return objects_dict

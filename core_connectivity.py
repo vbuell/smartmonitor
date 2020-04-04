@@ -27,17 +27,17 @@ class LocalExecutor(object):
         """The parameter 'cmd' is the shell command to execute in a
         sub-process. 'cwd' is a working directory. If timeout is specified
         and process overrun its value ProcessTimeoutError will be raised."""
-#        if subprocess_module_loaded:
-#            return self.exec_monitor_2_6(cmd, cwd)
-#        else:
+        if subprocess_module_loaded:
+            return self.exec_monitor_2_6(cmd, cwd)
+        else:
         return self.exec_monitor(cmd, cwd, timeout)
     
     def exec_monitor_2_6(self, cline, cwd=None):
         """Execute external script. Python 2.6 version. Doesn't support timeout 
         thus currently is disabled"""
         import subprocess
-        import StringIO
-        file = StringIO.StringIO()
+        import io
+        file = io.StringIO()
         retcode = subprocess.call([cline, ""], shell=True, cwd=cwd)
         return retcode
 
@@ -62,11 +62,11 @@ class LocalExecutor(object):
             os.kill(pid, signal.SIGKILL)
             raise ProcessTimeoutError
 
-        print "exit code: %d, signal %d" % ( (ec >> 8) & 0xFF, ec & 0xFF )
-        print "---"
+        print("exit code: %d, signal %d" % ( (ec >> 8) & 0xFF, ec & 0xFF ))
+        print("---")
         str_stdout = p.fromchild.read()  # dump stdout from child process
     #    print str_stdout
-        print "---"
+        print("---")
         retcode = (ec >> 8) & 0xFF
     #    print type(retcode) 
         if cwd:
@@ -80,9 +80,9 @@ class LocalExecutor(object):
 if __name__ == "__main__":
 
     try:
-        print "before"
+        print("before")
         executor = LocalExecutor()
         executor.call("sleep 10", timeout=3)
-        print "after"
-    except ProcessTimeoutError, e:
-        print "timeout caught"
+        print("after")
+    except ProcessTimeoutError as e:
+        print("timeout caught")

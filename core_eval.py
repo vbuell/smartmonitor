@@ -286,7 +286,7 @@ class  Test_evaluator(unittest.TestCase):
     def test_evaluator(self):
         evaluator = MonitorEvaluator()
         result = evaluator.evaluate("int(monitor('test_000').getLastSample().getTableVar('SRP DM performance measurements', 'dmMonitor.login', 'Val')) > 391", {})
-        self.assertEquals(result, 6)
+        self.assertEqual(result, 6)
 
 
         

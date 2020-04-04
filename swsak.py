@@ -57,9 +57,9 @@ class Export(Command):
         self.store.setWorkingDirectory(DATA_FILES_DIR)
         
         if self.options.output_type == "gchart":
-            print self.generate_gchart_url(self.options.monitor_id, self.options.measurement)
+            print(self.generate_gchart_url(self.options.monitor_id, self.options.measurement))
         elif self.options.output_type == "csv":
-            print self.export_csv(self.options.monitor_id, self.options.measurement)
+            print(self.export_csv(self.options.monitor_id, self.options.measurement))
 
     def generate_gchart_url(self, mon_id, parameter_name):
         ''' Read ticks and create the chart using google chart'''
@@ -132,10 +132,10 @@ class SwSAK(object):
                 export = Export()
                 export.run()
             else:
-                print "Error: unknown subcommand: " + sys.argv[1]
+                print("Error: unknown subcommand: " + sys.argv[1])
                 sys.exit()           
         else:
-            print "Error: use subcommand"
+            print("Error: use subcommand")
             sys.exit()           
         
         
@@ -145,4 +145,4 @@ if __name__ == "__main__":
         mtop = SwSAK()
         mtop.run()
     except KeyboardInterrupt:
-        print "Interrupted by user..."
+        print("Interrupted by user...")

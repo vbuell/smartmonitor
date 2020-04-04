@@ -6,7 +6,7 @@ import warnings
 warnings.simplefilter('ignore', DeprecationWarning)
 
 import sys, os
-import popen2
+import subprocess
 import re
 import logging
 import logging.handlers
@@ -14,7 +14,7 @@ import types
 try:
     import paramiko
 except ImportError:
-    print "Paramico not found. SSH disabled."
+    print("Paramico not found. SSH disabled.")
 import time
 import signal
 from signal import *
@@ -82,8 +82,8 @@ class SmartWrapper(object):
     def exec_monitor_2_6(self, cline, cwd=None):
         """Execute external script. Python 2.6 version."""
         import subprocess
-        import StringIO
-        file = StringIO.StringIO()
+        import io
+        file = io.StringIO()
         retcode = subprocess.call([cline, ""], shell=True, cwd=cwd)
         return retcode
 
@@ -93,7 +93,7 @@ class SmartWrapper(object):
         if cwd:
             cwd_backup = os.getcwd()
             os.chdir(cwd)
-        p = popen2.Popen3(cline)
+        p = subprocess.Popen(cline)
         pid = p.pid
         timebefore = time.time()
         str_stdout = ""
@@ -111,11 +111,11 @@ class SmartWrapper(object):
             raise ProcessTimeoutError
             return
 
-        print "exit code: %d, signal %d" % ( (ec >> 8) & 0xFF, ec & 0xFF )
-        print "---"
+        print("exit code: %d, signal %d" % ( (ec >> 8) & 0xFF, ec & 0xFF ))
+        print("---")
 #        str_stdout = p.fromchild.read()  # dump stdout from child process
     #    print str_stdout
-        print "---"
+        print("---")
         retcode = (ec >> 8) & 0xFF
     #    print type(retcode) 
         if cwd:
@@ -175,12 +175,12 @@ class SmartWrapper(object):
             for monitor_name in cfg.getMonitorsIds():
                 try:
                     self.run_monitor(monitor_name, args)
-                except Exception, e:
+                except Exception as e:
                     self.logger_bootstrap.exception(e)
         else:
             try:
                 self.run_monitor(self.options.monitor_name, args)
-            except Exception, e:
+            except Exception as e:
                 self.logger_bootstrap.exception(e)
 
     def run_monitor(self, monitor_name, args):
@@ -211,7 +211,7 @@ class SmartWrapper(object):
             self.configuration.monitor_name = monitor_name
             check = cfg.getMonitorByNameWithParents(monitor_name)
             if check is None:
-                print "ERROR: No monitor with specified id '" + monitor_name + "' defined."
+                print("ERROR: No monitor with specified id '" + monitor_name + "' defined.")
                 return
             
             # store itself
@@ -229,13 +229,13 @@ class SmartWrapper(object):
             if isinstance(check.get('threshold'), list):
                 for threshold in check.get('threshold'):
                     self.thresholds.append(threshold)
-            elif not isinstance(check.get('threshold'), types.NoneType):
+            elif not isinstance(check.get('threshold'), type(None)):
                 self.thresholds.append(check.get('threshold'))
             
             if isinstance(check.get('threshold-ref'), list):
                 for threshold_ref in check.get('threshold-ref'):
                     self.thresholds.append(self.get_threshold_by_name(threshold_ref))
-            elif not isinstance(check.get('threshold-ref'), types.NoneType):
+            elif not isinstance(check.get('threshold-ref'), type(None)):
                 self.thresholds.append(self.get_threshold_by_name(check.get('threshold-ref')))
                 
             logger.debug("Thresholds: " + str(self.thresholds))
@@ -261,9 +261,9 @@ class SmartWrapper(object):
             param_timeout = None
 
         type = self.check.get('type')
-        print ">>> type:", type
+        print(">>> type:", type)
         if type == "simple":
-            print "Simple script invocation."
+            print("Simple script invocation.")
         else:
             pass
 
@@ -271,28 +271,28 @@ class SmartWrapper(object):
         try:  
         
             # Execute external script
-            print "Executing..."
+            print("Executing...")
             if self.check.get('ssh'):
-                print "Executing via SSH..."
+                print("Executing via SSH...")
                 m = re.match(r"(\w+):(\S+)@([\w.]+)", self.check.get('ssh'))
                 
                 username = m.group(1)
                 password = m.group(2)
                 host = m.group(3)
                 
-                print username
-                print password
-                print host
+                print(username)
+                print(password)
+                print(host)
                 
                 try:
                     self.connect_to_host(host, username, password)
-                except Exception, e:
+                except Exception as e:
                     logger.error("Cannot connect to host: " + host)
                     raise InternalProcessingException("Cannot connect to host: " + host, RESULT_CRITICAL, "CONN")
 #                    self.system_error("Cannot connect to host " + host + ": " + str(e))
                 
                 # emulate cwd via cd
-                print("cd {}; {} {}".format(mon_cwd, mon_command, self.child_argv))
+                print(("cd {}; {} {}".format(mon_cwd, mon_command, self.child_argv)))
                 exec_output = self.exec_via_ssh_timeout("cd "+mon_cwd+"; " + mon_command + " " + self.child_argv, param_timeout)
                 
                 exec_output = self.exec_via_ssh_timeout("cat "+mon_output_file, 5)
@@ -304,12 +304,12 @@ class SmartWrapper(object):
             else:
                 try:
                     self.retcode, str_stdout = self.exec_monitor(mon_command + " " + self.child_argv, cwd=mon_cwd, timeout=param_timeout)
-                except ProcessTimeoutError, e:
-                    print "Timeout"
+                except ProcessTimeoutError as e:
+                    print("Timeout")
                     logger.error("Script execution timeout")
                     raise InternalProcessingException("Script execution timeout", RESULT_CRITICAL, "TIMEOUT")
-                except OSError, e:
-                    print "File/dir not found"
+                except OSError as e:
+                    print("File/dir not found")
                     logger.error("File/dir not found")
                     raise InternalProcessingException("File/directory not found", RESULT_CRITICAL, "IO")
 #                    self.system_error("Script execution timeout")
@@ -322,8 +322,8 @@ class SmartWrapper(object):
                     try:
                         with open(mon_output_file, "r") as f:
                             self.original_output_file_lines = f.readlines()
-                    except IOError, e:
-                        print "IOError error!!!!!!"
+                    except IOError as e:
+                        print("IOError error!!!!!!")
                         logger.exception(e)
                         message = str(e)
                         if self.retcode != 0:
@@ -371,25 +371,25 @@ class SmartWrapper(object):
             # Generate "fake" output file
             self.write_output_and_exit(self.generate_output_file())
             
-        except InternalProcessingException, e:
+        except InternalProcessingException as e:
             if not self.configuration.state_variables:
                 self.configuration.state_variables = {}
             if e.do_outfile:
-                print "Will create outfile"
+                print("Will create outfile")
                 self.return_value = e.health
                 self.error_message = "Wrapper error: " + e.msg + ". See log file for details: " + self.log_file_abspath
                 self.debug_message = e.msg
                 outfile = self.generate_output_file()
                 self.configuration.state_variables[DATA_VARIABLE_OUTFILE] = outfile
             if e.do_dbentry:
-                print "Storing to db..."
+                print("Storing to db...")
                 self.store_to_datastore(self.configuration.state_variables, e.health, e.stat)
-                print "Stored"
+                print("Stored")
             if e.do_outfile:
                 self.write_output_and_exit(outfile, False)
         
     def store_to_datastore(self, object, health, stat):
-        print "Writing to storage..."
+        print("Writing to storage...")
         store = DataStore()
         store.setWorkingDirectory(DATA_FILES_DIR)
         storage = store.getStorage(self.configuration.monitor_name)
@@ -402,7 +402,7 @@ class SmartWrapper(object):
     def analyse_data(self):
         global logger
         # Analyze data
-        print "Analyzing..."
+        print("Analyzing...")
         try:
             evaluator = MonitorEvaluator()
             for threshold in self.thresholds:
@@ -417,7 +417,7 @@ class SmartWrapper(object):
                 elif self.map_result(result) == RESULT_WARNING:
                     self.append_debug("WARN: Threshold:" + threshold)
                 
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
             raise InternalProcessingException(str(type(e)) + ":" + str(e), RESULT_CRITICAL, "TRGG")
 #            self.system_error(str(type(e)) + ":" + str(e))
@@ -428,12 +428,12 @@ class SmartWrapper(object):
         logger.warn(error_message)
 
     def map_result(self, var):
-        if isinstance(var, types.BooleanType):
+        if isinstance(var, bool):
             if var:
                 return RESULT_CRITICAL
             else:
                 return RESULT_OK
-        if isinstance(var, types.TupleType):
+        if isinstance(var, tuple):
             if var[0]:
                 return RESULT_CRITICAL
             if var[1]:
@@ -451,7 +451,7 @@ class SmartWrapper(object):
         str_out = OUTFILE_PROPERTY_RESULT + "=" + str(self.return_value) + "\n"
         if self.debug_message:
             str_out += OUTFILE_PROPERTY_DEBUG + "=" + self.filter_illegal_chars(str(self.debug_message)) + "\n"
-        print ">> execution-time", self.check.get('execution-time')
+        print(">> execution-time", self.check.get('execution-time'))
         if self.check.get('execution-time') == "yes" and self.execution_time:
             str_out += OUTFILE_PROPERTY_EXEC_TIME + "="+"%.2f" % self.execution_time+"\n"
         str_out += OUTFILE_PROPERTY_MESSAGE + "=" + self.filter_illegal_chars(str(self.error_message))
@@ -466,7 +466,7 @@ class SmartWrapper(object):
         if self.options.output_file:
             with open(self.options.output_file, "w") as outfile:
                 outfile.write(content)
-            print "Output file written to " + self.options.output_file
+            print("Output file written to " + self.options.output_file)
 #        exit(self.return_value)
         # Disabled sys.exit() as now application can run several monitors. What status should we return?
 #        if do_exit:

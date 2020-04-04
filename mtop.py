@@ -152,7 +152,7 @@ class MTop(object):
         self.monitors = sorted(self.monitors)
 
         # detect max length of monitors' names
-        mon_len = max(map(len, self.monitors))
+        mon_len = max(list(map(len, self.monitors)))
 
         self.pattern = "%(monname)-" + str(mon_len) + "s"
 
@@ -161,9 +161,9 @@ class MTop(object):
         self.store.setWorkingDirectory(self.BASE_DATA_DIR + self.DATA_FILES_DIR)
         
     def get_log_errors(self, directory, lines):
-        import commands
+        import subprocess
 # return commands.getstatusoutput('cat '+directory+'/*.log | grep "[1-9]\{3\} ERROR" | sort | tail -n 10 | sort -r')[1]
-        return commands.getstatusoutput('for a in ' + directory +
+        return subprocess.getstatusoutput('for a in ' + directory +
                                         '/*.log; do tail "$a" -n50; done|grep "[1-9]\{3\} ERROR" | sort | tail -n ' +
                                         str(lines) + ' | sort -r')[1]
 
@@ -180,13 +180,13 @@ class MTop(object):
 #        inkey.init_raw()
         
         cols, rows = terminal_size()
-        print cols, rows
+        print(cols, rows)
         self.width = cols
         self.height = rows
 
 #        for i in range(1,7):
         while True:
-            print self.step()
+            print(self.step())
             
             time.sleep(int(self.options.refresh_time))
 #            print 'Press a key'
@@ -241,7 +241,7 @@ class MTop(object):
             format(self.frm.ok("-"), self.frm.warn("w"), self.frm.fail("e"),
                    self.frm.fail("t"), self.frm.fail("K"), self.frm.fail("!"))
 
-        print "Monitors status...  ",
+        print("Monitors status...  ", end=' ')
         sys.stdout.flush()
         
         header_line = self.pattern % {'monname': "MID"} + "\t" + "%% " + "\t" + "STAT" + "\t" + "GRAPH                                           " + "\t" + "LAST POLL"
@@ -281,7 +281,7 @@ class MTop(object):
         if log_lines_count > 0:
             screen_str += "\n"
             if self.ui_step_count == 0:
-                print "Wrapper errors parsing...  ",
+                print("Wrapper errors parsing...  ", end=' ')
                 sys.stdout.flush()
                 screen_str += self.frm.invert("Last wrapper errors:\n")
                 self.last_wrapper_log_errors = self.get_log_errors(self.BASE_DATA_DIR + self.LOG_FILES_DIR, log_lines_count)
@@ -291,7 +291,7 @@ class MTop(object):
         
             screen_str += "\n"
             if self.ui_step_count == 0:
-                print "Monitors' errors parsing...  ",
+                print("Monitors' errors parsing...  ", end=' ')
                 sys.stdout.flush()
                 screen_str += self.frm.invert("Last monitors' errors:\n")
                 self.last_monitors_log_errors = self.get_log_errors(self.BASE_DATA_DIR + self.MONITORS_LOG_FILES_DIR, log_lines_count)
@@ -376,7 +376,7 @@ class MTop(object):
                         if "Value" in value_dict_with_columns:
                             try:
                                 f_value = float(value_dict_with_columns["Value"])
-                            except ValueError, e:
+                            except ValueError as e:
                                 continue
                             if key_measurement in measurements:
                                 measurements[key_measurement] += "," + str(f_value)
@@ -389,7 +389,7 @@ class MTop(object):
                     continue    # TODO: support for tables
                 try:
                     f_value = float(obj[key])
-                except ValueError, e:
+                except ValueError as e:
                     continue
                     
                 if key in measurements:
@@ -445,7 +445,7 @@ def getChar():
         r, w, e = select.select([fd], [], [])
         if r:
             c = sys.stdin.read(1)
-            print "Got character", repr(c)
+            print("Got character", repr(c))
             if c == "q":
                 return
     finally:
@@ -492,4 +492,4 @@ if __name__ == "__main__":
         mtop = MTop()
         mtop.run()
     except KeyboardInterrupt:
-        print "Interrupted by user..."
+        print("Interrupted by user...")

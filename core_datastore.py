@@ -29,8 +29,8 @@ class Storage(object):
 
     def __init__(self, filename):
         """Constructor."""
-        self.file = file(filename, 'a+')
-        self.filestat = file(filename + ".stat", 'a+')
+        self.file = open(filename, 'a+')
+        self.filestat = open(filename + ".stat", 'a+')
         self.last_timestamp = None
         self.re_pattern_entry = re.compile(r"^(.+) (-?\d+)hu( ([A-Z]+))?$")
 
@@ -50,8 +50,8 @@ class Storage(object):
                 if idx == len(lines) - 1:
                     self.last_timestamp = dt
                 entries.append(obj)
-            except ValueError, e:
-                print e
+            except ValueError as e:
+                print(e)
                 logging.exception(e)
 
         return entries
@@ -72,8 +72,8 @@ class Storage(object):
                 if idx == len(lines) - 1:
                     self.last_timestamp = dt
                 entries.append((obj, dt, var_xxx))
-            except ValueError, e:
-                print e
+            except ValueError as e:
+                print(e)
                 logging.exception(e)
 
         return entries
@@ -94,8 +94,8 @@ class Storage(object):
                 if idx == len(lines) - 1:
                     self.last_timestamp = dt
                 entries.append((obj, dt, var_xxx, stat))
-            except ValueError, e:
-                print e
+            except ValueError as e:
+                print(e)
                 logging.exception(e)
 
         return entries
@@ -135,14 +135,14 @@ class Storage(object):
         elif units.startswith("sec"):
             now = now - timedelta(seconds=amount)
         
-        for idx in reversed(range(0, len(lines))):
+        for idx in reversed(list(range(0, len(lines)))):
             line = lines[idx].strip()
             try:
                 obj, dt, var_xxx, stat = self.line_to_obj(line)
                 if dt > now:
                     entries.append(obj)
-            except ValueError, e:
-                print e
+            except ValueError as e:
+                print(e)
                 logging.exception(e)
 
         return entries
@@ -181,7 +181,7 @@ class Storage(object):
         elif json_module == "demjson":
             str_out += demjson.encode(object)
             
-        print "HEALTH IS: ", health
+        print("HEALTH IS: ", health)
 
         if health is not None:
             str_out += " " + str(health) + "hu"

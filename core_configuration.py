@@ -1,6 +1,5 @@
-import ConfigParser
+import configparser
 import os
-import sets
 import re
 from itertools import chain
 from datetime import datetime
@@ -20,7 +19,7 @@ def getConfigFiles(ending):
 
 
 def assembleConfig():
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read(getConfigFiles('.conf'))
     return config
 
@@ -59,10 +58,10 @@ class BaseConfig(object):
         return False
 
     def getStateNames(self):
-        return self.stateLookup.values()
+        return list(self.stateLookup.values())
 
     def getStateNumbers(self):
-        return self.stateLookup.keys()
+        return list(self.stateLookup.keys())
 
     def getStateNameFromNumber(self, num):
         return self.stateLookup[str(num)]
@@ -143,7 +142,7 @@ def get_configuration(rootdir="."):
     cfg = SchemalessConfig(assembleConfig())
 
     global cfg_thresholds
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.readfp(open(CORE_CONFIGURATION_ROOT_DIRECTORY + "/etc/thresholds.conf"))
     cfg_thresholds = dict(config.items('thresholds'))
 

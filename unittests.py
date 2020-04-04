@@ -47,17 +47,17 @@ class  Test_evaluator_basic(unittest.TestCase):
     def test_evaluation(self):
         evaluator = MonitorEvaluator()
         result = evaluator.evaluate("1.0 + 2.0", None)
-        self.assertEquals(result, 3.0)
+        self.assertEqual(result, 3.0)
 
     def test_evaluation_complex(self):
         evaluator = MonitorEvaluator()
         result = evaluator.evaluate("param>3", {"param" : 0, "param2" : "OK"})
-        self.assertEquals(result, False)
+        self.assertEqual(result, False)
 
     def test_evaluation_functions(self):
         evaluator = MonitorEvaluator()
         result = evaluator.evaluate("sum(lastSamples(4).result)", {"result" : 0, "param2" : "OK"})
-        self.assertEquals(result, 6)
+        self.assertEqual(result, 6)
         
     def test_DSL_style(self):
         # WIP
@@ -65,7 +65,7 @@ class  Test_evaluator_basic(unittest.TestCase):
 #        monitor('aaa').getLastEntries(5)
         
     def test_eval_function(self):
-        self.assertEquals(sum(lastSamples(4).result), 6)
+        self.assertEqual(sum(lastSamples(4).result), 6)
         
 
 '''
@@ -94,16 +94,16 @@ class  Test_datastore(unittest.TestCase):
         storage.putEntry(t, 10)
 
         obj = storage.getLastEntries(1)
-        self.assertEquals(len(obj), 1)
+        self.assertEqual(len(obj), 1)
 
         obj = storage.getLastEntries(2)
-        self.assertEquals(len(obj), 2)
+        self.assertEqual(len(obj), 2)
 
         obj = storage.getLastEntries(3)
-        self.assertEquals(len(obj), 3)
+        self.assertEqual(len(obj), 3)
 
         obj = storage.getLastEntries(0)
-        self.assertEquals(len(obj), 0)
+        self.assertEqual(len(obj), 0)
 
 
     def test_arguments(self):
@@ -155,23 +155,23 @@ class  Test_datastore(unittest.TestCase):
         storage.putEntry(t, 10)
 
         obj = storage.getLastEntriesWithResult(1)
-        self.assertEquals(len(obj), 1)
-        self.assertEquals(obj[0][2], 10)
+        self.assertEqual(len(obj), 1)
+        self.assertEqual(obj[0][2], 10)
 
         storage.putEntry(t, -99)
         obj = storage.getLastEntriesWithResult(1)
-        self.assertEquals(len(obj), 1)
-        self.assertEquals(obj[0][2], -99)
+        self.assertEqual(len(obj), 1)
+        self.assertEqual(obj[0][2], -99)
 
         storage.putEntry(t)
         obj = storage.getLastEntriesWithResult(1)
-        self.assertEquals(len(obj), 1)
-        self.assertEquals(obj[0][2], 0)
+        self.assertEqual(len(obj), 1)
+        self.assertEqual(obj[0][2], 0)
         
         storage.appendHealthInfoToLastEntry(56)
         obj = storage.getLastEntriesWithResult(1)
-        self.assertEquals(len(obj), 1)
-        self.assertEquals(obj[0][2], 56)
+        self.assertEqual(len(obj), 1)
+        self.assertEqual(obj[0][2], 56)
 
 
 '''
@@ -199,8 +199,8 @@ class  Test_outputparser(unittest.TestCase):
         parser.setColumnsDelimiter("")
         filename = "./testdata/outfile/sftp_alden.led-22_out.txt"
         res = parser.parse(filename)
-        self.assertEquals(res["message"], 'OK')
-        self.assertEquals(res["result"], 1)
+        self.assertEqual(res["message"], 'OK')
+        self.assertEqual(res["result"], 1)
         
     def test_table_output(self):
         parser = MonitorOutputParser()
@@ -229,29 +229,29 @@ class  Test_outputparser(unittest.TestCase):
         filename = "./testdata/outfile/checker_output.txt"
         res = parser.parse(filename)
         
-        self.assertEquals(res["startSession"], 0)
-        self.assertEquals(res["login"], 0)
-        self.assertEquals(res["service.reports.generate.oltp.report"], 0)
-        self.assertEquals(res["service.reports.generate.dw.report"], "WARNING:Report instance ID=-1. DW Reports aren't enabled on the instance.")
-        self.assertEquals(res["service.dw.status.service.dw.status.read"], "WARNING:DW status=null. DW is not installed.")
-        self.assertEquals(res["ui.about.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["startSession"], 0)
+        self.assertEqual(res["login"], 0)
+        self.assertEqual(res["service.reports.generate.oltp.report"], 0)
+        self.assertEqual(res["service.reports.generate.dw.report"], "WARNING:Report instance ID=-1. DW Reports aren't enabled on the instance.")
+        self.assertEqual(res["service.dw.status.service.dw.status.read"], "WARNING:DW status=null. DW is not installed.")
+        self.assertEqual(res["ui.about.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
         
-        self.assertEquals(res["ui.mySRP.navigateToPage"], 0.035)
-        self.assertEquals(res["ui.myProcesses.navigateToPage"], 1.257)
-        self.assertEquals(res["ui.myProcesses.search"], 0.974)
-        self.assertEquals(res["ui.myProcesses.checkSearchResult"], 0)
-        self.assertEquals(res["ui.salesBatches.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["ui.salesLines.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["ui.artistContract.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["ui.crossingLicense.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["ui.product.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["ui.account.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["ui.tva.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["ui.users.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["ui.loggedInUsers"], "FAILED due to error:java.lang.reflect.InvocationTargetException")
-        self.assertEquals(res["ui.references.assignment.navigateToPage"], 0.065)
-        self.assertEquals(res["ui.reportSubscription.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
-        self.assertEquals(res["logout"], 0)
+        self.assertEqual(res["ui.mySRP.navigateToPage"], 0.035)
+        self.assertEqual(res["ui.myProcesses.navigateToPage"], 1.257)
+        self.assertEqual(res["ui.myProcesses.search"], 0.974)
+        self.assertEqual(res["ui.myProcesses.checkSearchResult"], 0)
+        self.assertEqual(res["ui.salesBatches.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["ui.salesLines.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["ui.artistContract.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["ui.crossingLicense.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["ui.product.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["ui.account.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["ui.tva.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["ui.users.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["ui.loggedInUsers"], "FAILED due to error:java.lang.reflect.InvocationTargetException")
+        self.assertEqual(res["ui.references.assignment.navigateToPage"], 0.065)
+        self.assertEqual(res["ui.reportSubscription.navigateToPage"], "FAILED due to error:java.lang.NullPointerException")
+        self.assertEqual(res["logout"], 0)
 #Result=FAILED in 2.331sec.
         
 
@@ -291,11 +291,11 @@ class Test_configuration(unittest.TestCase):
         from ZConfig.schemaless import loadConfigFile
         f = open("./etc/defines.conf", "r")
         config = loadConfigFile(f)
-        print(config['monitor-basedir-crux'])
+        print((config['monitor-basedir-crux']))
 
     def test_parametrized_monitors(self):
         check = cfg.getMonitorByName("testMonitorParam?crux,6440")
-        print type(check)
+        print(type(check))
         self.assertEqual(check.host, "your.host.com")
         self.assertEqual(check.ssh, "root:pass@your.host.com")
         #TODO: validate number of arguments
@@ -340,8 +340,8 @@ class Test_functional(unittest.TestCase):
         before = time.time()
         time.sleep(1)
         after = time.time()
-        print "////" + "%.2f seconds" % (after - before)
-        print sys.path
+        print("////" + "%.2f seconds" % (after - before))
+        print(sys.path)
         
     def test_time(self):
         from datetime import datetime, timedelta
