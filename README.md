@@ -8,50 +8,10 @@ store statistics, invoke scripts via SSH. It have internal console line and web 
 Requirements
 ------------
 
-* Python: 2.3+
+* Python: 3.?+
 * python-paramiko: ??
 * python-crypto
 
-
-Installation
-------------
-
-1a. Installation of python development headers (SLES)
-
-```
-yast -i python-devel
-yast -i python-xml
-```
-
-1b. Installation of python development headers (Debian/Ubuntu)
-
-```
-apt-get install python-dev
-```
-
-2. Installation of python modules 
-
-python-demjson, python-paramiko and python-crypto are needed
-
-You can install them manually (see section 2.1) or automatically by supplied script (see section 2.2)
-
-
-2.1 Manual installation
-
-```
-wget http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
-wget http://www.lag.net/paramiko/download/paramiko-1.7.4.tar.gz
-
-tar zxvf pycrypto-2.0.1.tar.gz;cd pycrypto-2.0.1;python setup.py install
-tar zxvf paramiko-1.7.4.tar.gz;cd paramiko-1.7.4;python setup.py install
-```
-
-2.2 Automatic installation
-
-```
-cd ./installation
-sudo sh build-dependencies.sh
-```
 
 Make sure that 'monitor-basedir' variable in etc/defines.conf points to actual SRP_SelfTest directory.
 

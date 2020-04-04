@@ -144,11 +144,17 @@ class SmartWrapper(object):
         # Logging initialization
         LOG_FILENAME = LOG_FILES_DIR + "/bootstrap.log"
 
-        self.logger_bootstrap = logging.getLogger('smartwrapperapp')
-        hdlr = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=1000000, backupCount=5)
+        self.logger_bootstrap = logging.getLogger()
         formatter = logging.Formatter(LOGGER_FORMAT)
+
+        hdlr = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=1000000, backupCount=5)
         hdlr.setFormatter(formatter)
+
+        consoleHandler = logging.StreamHandler()
+        consoleHandler.setFormatter(formatter)
+
         self.logger_bootstrap.addHandler(hdlr)
+        self.logger_bootstrap.addHandler(consoleHandler)
         self.logger_bootstrap.setLevel(logging.DEBUG)
 
         self.logger_bootstrap.info('-- SmartWrapper started --')
