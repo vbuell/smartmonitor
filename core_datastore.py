@@ -100,7 +100,7 @@ class Storage(object):
         return entries
     
     def getEntryByTimeWithResult(self, dt, lines_limit=100):
-        str_dt = dt.strftime(DATETIME_FORMAT)
+        str_dt = dt.isoformat()
         self.file.seek(0)
         lines = self.tail_lines(self.file, lines_limit)
         for line in lines:

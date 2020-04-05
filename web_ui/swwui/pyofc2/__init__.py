@@ -1,2 +1,2 @@
 #           
-from ofc2 import *
+from .ofc2 import *

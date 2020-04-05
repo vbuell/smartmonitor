@@ -30,7 +30,7 @@ class LocalExecutor(object):
         if subprocess_module_loaded:
             return self.exec_monitor_2_6(cmd, cwd)
         else:
-        return self.exec_monitor(cmd, cwd, timeout)
+            return self.exec_monitor(cmd, cwd, timeout)
     
     def exec_monitor_2_6(self, cline, cwd=None):
         """Execute external script. Python 2.6 version. Doesn't support timeout 

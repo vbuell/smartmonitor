@@ -365,28 +365,32 @@ class MTop(object):
 
     def getAllAvailableMeasurementsAsGchart(self, mon_id):
         entries = self.getLastMeasurementsForMonitor(mon_id)
+        print(str(entries))
         measurements = {}
         limits = {}
         for entry in entries:
             obj, dt, health, stat = entry
             for key in obj:
-                if getattr(obj[key], '__iter__', False):
-                    for key_measurement in obj[key]:
-                        value_dict_with_columns = obj[key][key_measurement]
-                        if "Value" in value_dict_with_columns:
-                            try:
-                                f_value = float(value_dict_with_columns["Value"])
-                            except ValueError as e:
-                                continue
-                            if key_measurement in measurements:
-                                measurements[key_measurement] += "," + str(f_value)
-                                if limits[key_measurement] < f_value:
-                                    limits[key_measurement] = f_value
-                            else:
-                                measurements[key_measurement] = str(f_value)
-                                limits[key_measurement] = f_value
+                # FIXME:
+                # if getattr(obj[key], '__iter__', False):
+                #     for key_measurement in obj[key]:
+                #         print(str(obj[key]))
+                #         print("key_measurement: ", key_measurement)
+                #         value_dict_with_columns = obj[key][key_measurement]
+                #         if "Value" in value_dict_with_columns:
+                #             try:
+                #                 f_value = float(value_dict_with_columns["Value"])
+                #             except ValueError as e:
+                #                 continue
+                #             if key_measurement in measurements:
+                #                 measurements[key_measurement] += "," + str(f_value)
+                #                 if limits[key_measurement] < f_value:
+                #                     limits[key_measurement] = f_value
+                #             else:
+                #                 measurements[key_measurement] = str(f_value)
+                #                 limits[key_measurement] = f_value
                             
-                    continue    # TODO: support for tables
+                #     continue    # TODO: support for tables
                 try:
                     f_value = float(obj[key])
                 except ValueError as e:

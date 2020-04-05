@@ -15,7 +15,7 @@ except ImportError:
 
 from django.http import HttpResponse
 from django.template import Context, loader
-from pyofc2  import * 
+from .pyofc2 import *
 
 datadir = os.path.dirname(sys.argv[0])
 if not datadir:
@@ -240,15 +240,15 @@ def monitor(request, mon_id=""):
     # thresholds
     thresholds = []
     if isinstance(mon_definition.get('threshold'), list):
-        for threshold in mon_definition.threshold:
+        for threshold in mon_definition['threshold']:
             thresholds.append(threshold)
-    elif not isinstance(mon_definition.get('threshold'), types.NoneType):
-        thresholds.append(mon_definition.threshold)
+    elif mon_definition.get('threshold') is not None:
+        thresholds.append(mon_definition['threshold'])
     
     if isinstance(mon_definition.get('threshold_ref'), list):
         for threshold_ref in mon_definition.get('threshold_ref'):
             thresholds.append(mtop.cfg.thresholds.__getattr__(threshold_ref))
-    elif not isinstance(mon_definition.get('threshold_ref'), types.NoneType):
+    elif mon_definition.get('threshold_ref') is not None:
         thresholds.append(mtop.cfg.thresholds.__getattr__(mon_definition.threshold_ref))
         
     criticals, warnings = analyze_thresholds(thresholds)

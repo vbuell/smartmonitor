@@ -7,6 +7,7 @@ warnings.simplefilter('ignore', DeprecationWarning)
 
 import sys, os
 import subprocess
+import shlex
 import re
 import logging
 import logging.handlers
@@ -79,28 +80,21 @@ class SmartWrapper(object):
         self.options = options
         return args
     
-    def exec_monitor_2_6(self, cline, cwd=None):
-        """Execute external script. Python 2.6 version."""
-        import subprocess
-        import io
-        file = io.StringIO()
-        retcode = subprocess.call([cline, ""], shell=True, cwd=cwd)
-        return retcode
-
     def exec_monitor(self, cline, cwd=None, timeout=None):
         """Execute external script."""
         timeout_detected = False
         if cwd:
             cwd_backup = os.getcwd()
             os.chdir(cwd)
-        p = subprocess.Popen(cline)
+        args = shlex.split(cline)
+        p = subprocess.Popen(args, stdout=subprocess.PIPE)
         pid = p.pid
         timebefore = time.time()
         str_stdout = ""
-        ec = -1
-        while ec == -1:
+        ec = None
+        while ec == None:
+            str_stdout += p.communicate()[0].decode()
             ec = p.poll()
-            str_stdout += p.fromchild.read()
             if timeout and (time.time() - timebefore) > timeout:
                 timeout_detected = True
                 break
@@ -312,11 +306,11 @@ class SmartWrapper(object):
                     self.retcode, str_stdout = self.exec_monitor(mon_command + " " + self.child_argv, cwd=mon_cwd, timeout=param_timeout)
                 except ProcessTimeoutError as e:
                     print("Timeout")
-                    logger.error("Script execution timeout")
+                    logger.exception("Script execution timeout")
                     raise InternalProcessingException("Script execution timeout", RESULT_CRITICAL, "TIMEOUT")
                 except OSError as e:
                     print("File/dir not found")
-                    logger.error("File/dir not found")
+                    logger.exception("File or dir not found")
                     raise InternalProcessingException("File/directory not found", RESULT_CRITICAL, "IO")
 #                    self.system_error("Script execution timeout")
                 if self.retcode == 0:

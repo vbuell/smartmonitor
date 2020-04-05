@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, include
 from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
@@ -10,12 +10,12 @@ urlpatterns = patterns('swwui.views',
 )
 
 urlpatterns += patterns('',
-    (r'^mtop/$', 'web_ui.swwui.views.main'),
-    (r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/$', 'web_ui.swwui.views.monitor'),
-    (r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/(?P<mes_id>[.\d\w-]+)$', 'web_ui.swwui.views.measurement'),
-    (r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/tick/(?P<dt>[:,.\d\w-]+)$', 'web_ui.swwui.views.tick'),
-    (r'^mtop/doc/(?P<page>[.\d\w-]+)/$', 'web_ui.swwui.views.doc'),
-    (r'^mtop/rawout$', 'web_ui.swwui.views.rawout'),
+    (r'^mtop/$', 'swwui.views.main'),
+    (r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/$', 'swwui.views.monitor'),
+    (r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/(?P<mes_id>[.\d\w-]+)$', 'swwui.views.measurement'),
+    (r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/tick/(?P<dt>[:,.\d\w-]+)$', 'swwui.views.tick'),
+    (r'^mtop/doc/(?P<page>[.\d\w-]+)/$', 'swwui.views.doc'),
+    (r'^mtop/rawout$', 'swwui.views.rawout'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
