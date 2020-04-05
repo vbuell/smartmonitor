@@ -219,7 +219,7 @@ class Storage(object):
         if linesback == 0:
             return []
         
-        avgcharsperline=600
+        avgcharsperline = 600
     
         while 1:
             try: file.seek(int(-1 * avgcharsperline * linesback),2)
@@ -234,9 +234,9 @@ class Storage(object):
 #        file.close()
     
         if len(lines) > linesback: 
-            start=len(lines)-linesback -1
+            start = len(lines)-linesback -1
         else: 
-            start=0
+            start = 0
         return lines[start:len(lines)-1]
 
 

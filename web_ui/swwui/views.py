@@ -14,7 +14,7 @@ except ImportError:
         json_module = "none"
 
 from django.http import HttpResponse
-from django.template import Context, loader
+from django.template import loader
 from .pyofc2 import *
 
 datadir = os.path.dirname(sys.argv[0])
@@ -180,8 +180,7 @@ def main(request):
     template_dict['filter'] = s_filter
 
     t = loader.get_template('index.html')
-    c = Context(template_dict)
-    return HttpResponse(t.render(c))
+    return HttpResponse(t.render(template_dict))
 
 
 def rawout(request):
@@ -276,7 +275,7 @@ def monitor(request, mon_id=""):
         
 
     t = loader.get_template('monitor.html')
-    c = Context({
+    c = {
         'mon_id': mon_id,
         'gchart_url': gchart_url,
         'measurements': measurement_infos,
@@ -284,7 +283,7 @@ def monitor(request, mon_id=""):
         'definition': definition,
         'debug': criticals,
         'debug2': warnings
-    })
+    }
     return HttpResponse(t.render(c))
         
 
@@ -305,12 +304,12 @@ def measurement(request, mon_id="", mes_id=""):
     measurement_infos.append(meas_info)
 
     t = loader.get_template('measurement.html')
-    c = Context({
+    c = {
         'mon_id': mon_id,
         'mes_id': mes_id,
         'measurements': measurement_infos,
         'gchart_url': "",
-    })
+    }
     return HttpResponse(t.render(c))
 
 
@@ -342,7 +341,7 @@ def tick(request, mon_id="", dt=""):
     health_stat = map_health_to_status(health)
     
     t = loader.get_template('tick.html')
-    c = Context({
+    c = {
         'mon_id': mon_id,
         'gchart_url': "",
         'payload': str(objects),
@@ -351,12 +350,12 @@ def tick(request, mon_id="", dt=""):
         'health_stat': health_stat,
         'date': dt,
         'outfile': outfile
-    })
+    }
     return HttpResponse(t.render(c))
 
 
 def doc(request, page=""):
     t = loader.get_template(page + '.html')
-    c = Context({
-    })
+    c = {
+    }
     return HttpResponse(t.render(c))
