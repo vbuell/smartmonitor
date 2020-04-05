@@ -1,18 +1,7 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 
-try:
-    import json # 2.6
-    json_module = "json"
-except ImportError: 
-    import demjson
-    json_module = "demjson"
-#    try:
-#        import jsonlib # fastest form outsiders
-#        json_module = "jsonlib"
-#    except ImportError: 
-#        import demjson
-#        json_module = "demjson"
+import json
 import logging
 import re
 import os
@@ -37,7 +26,7 @@ class Storage(object):
         """Read last n entries from the storage file."""
         entries = []
         self.file.seek(0)
-        lines = self.tail_lines(self.file, number_of_entries)
+        lines = self._tail_lines(self.file, number_of_entries)
         
         if len(lines) < number_of_entries:
             number_of_entries = len(lines)
@@ -50,7 +39,6 @@ class Storage(object):
                     self.last_timestamp = dt
                 entries.append(obj)
             except ValueError as e:
-                print(e)
                 logging.exception(e)
 
         return entries
@@ -72,7 +60,6 @@ class Storage(object):
                     self.last_timestamp = dt
                 entries.append((obj, dt, var_xxx))
             except ValueError as e:
-                print(e)
                 logging.exception(e)
 
         return entries
@@ -81,7 +68,7 @@ class Storage(object):
         """Read last n entries from the storage file."""
         entries = []
         self.file.seek(0)
-        lines = self.tail_lines(self.file, number_of_entries)
+        lines = self._tail_lines(self.file, number_of_entries)
         
         if len(lines) < number_of_entries:
             number_of_entries = len(lines)
@@ -94,7 +81,6 @@ class Storage(object):
                     self.last_timestamp = dt
                 entries.append((obj, dt, var_xxx, stat))
             except ValueError as e:
-                print(e)
                 logging.exception(e)
 
         return entries
@@ -102,14 +88,13 @@ class Storage(object):
     def getEntryByTimeWithResult(self, dt, lines_limit=100):
         str_dt = dt.isoformat()
         self.file.seek(0)
-        lines = self.tail_lines(self.file, lines_limit)
+        lines = self._tail_lines(self.file, lines_limit)
         for line in lines:
             if line.startswith(str_dt):
 #                try:
                     obj, dt, var_xxx, stat = self.line_to_obj(line)
                     return obj, dt, var_xxx, stat
 #                except ValueError, e:
-#                    print e
 #                    logging.exception(e)
                 
         return None
@@ -141,7 +126,6 @@ class Storage(object):
                 if dt > now:
                     entries.append(obj)
             except ValueError as e:
-                print(e)
                 logging.exception(e)
 
         return entries
@@ -162,23 +146,13 @@ class Storage(object):
 
         if not do_json:
             return None, dt, health, stat
-        if json_module == "json":
-            return json.loads(json_body), dt, health, stat    # 2.6
-        elif json_module == "jsonlib":
-            return jsonlib.read(json_body, use_float = True), dt, health, stat
-        elif json_module == "demjson":
-            return demjson.decode(json_body), dt, health, stat
+        return json.loads(json_body), dt, health, stat
 
     def obj_to_line(self, object, health=None, stat=None):
 
         str_out = datetime.utcnow().isoformat() + " " 
 
-        if json_module == "json":
-            str_out += json.dumps(object)
-        elif json_module == "jsonlib":
-            str_out += jsonlib.write(object)
-        elif json_module == "demjson":
-            str_out += demjson.encode(object)
+        str_out += json.dumps(object)
             
         print("HEALTH IS: ", health)
 
@@ -210,7 +184,7 @@ class Storage(object):
         self.file.write(" " + str(health) + "hu"  + "\n")
         self.file.flush()
         
-    def tail_lines(self, file, linesback=10):
+    def _tail_lines(self, file, linesback=10):
         """Does what "tail -10 filename" would have done
            Parameters:
                 filename   file to read

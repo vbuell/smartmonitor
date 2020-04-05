@@ -3,15 +3,7 @@ import random
 import time
 import types
 import re
-try:
-    import json # 2.6
-    json_module = "json"
-except ImportError:
-    try:
-        import demjson
-        json_module = "demjson"
-    except ImportError:
-        json_module = "none"
+import json # 2.6
 
 from django.http import HttpResponse
 from django.template import loader
@@ -222,12 +214,7 @@ def analyze_thresholds(thresholds):
 
 
 def dump(obj):
-    if json_module == "json":
-        return json.dumps(obj, sort_keys=True, indent=4)
-    elif json_module == "demjson":
-        return demjson.encode(obj, compactly=False)
-    else:
-        return str(obj)
+    return json.dumps(obj, sort_keys=True, indent=4)
     
 
 def monitor(request, mon_id=""):

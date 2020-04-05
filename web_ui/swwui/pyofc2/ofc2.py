@@ -27,16 +27,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 """
 
-try:
-    import json # 2.6
-    json_module = "json"
-except ImportError: 
-    try:
-        import cjson
-        json_module = "cjson"
-    except ImportError: 
-        import demjson
-        json_module = "demjson"
+import json
 
 class OFCBase(dict):
     type = None
@@ -175,12 +166,4 @@ class open_flash_chart(OFCBase):
             self['elements'] = [element]
 
     def __str__(self):
-        return self.render()
-
-    def render(self):
-        if json_module == "json":
-            return json.dumps(self)
-        elif json_module == "cjson":
-            return cjson.encode(self)
-        elif json_module == "demjson":
-            return demjson.encode(self)
+        return json.dumps(self)
