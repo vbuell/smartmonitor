@@ -1,6 +1,11 @@
 
 
-Version: CVS
+Version: 0.12
+
+The most notable changes in this version: 
+
+* Migrated to python3
+* MIgrated to django3
 
 - sw: fix: script execution errors (the working directory or the script
     is absent or not accessible in the file system) doesn't generate 
@@ -42,6 +47,6 @@ Detailed changelog:
 
 Version 0.10
 
-30-Oktober-2009
+30-October-2009
 
 first public version of mtop utility
