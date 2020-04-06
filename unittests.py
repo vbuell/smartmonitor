@@ -1,6 +1,3 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-
 import unittest
 import sys, os
 from core_eval import *
@@ -360,5 +357,3 @@ class Test_functional(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-# Also please send when you will have results perfmon please send Status in the form of table would be the best 

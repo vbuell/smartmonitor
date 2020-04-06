@@ -1,7 +1,3 @@
-'''
-Created on May 25, 2009
-@author: vbuell
-'''
 import re
 import unittest
 import logging

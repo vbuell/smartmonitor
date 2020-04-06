@@ -1,8 +1,3 @@
-'''
-Created on Jun 19, 2009
-
-@author: vbuell
-'''
 import time
 import fcntl
 import struct

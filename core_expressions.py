@@ -1,9 +1,3 @@
-'''
-Created on Jun 9, 2009
-
-@author: vbuell
-'''
-
 class Expression:
     pass
 

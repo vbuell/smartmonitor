@@ -1,6 +1,3 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-
 import warnings
 warnings.filterwarnings("ignore", message="The popen2 module is deprecated")
 

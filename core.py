@@ -1,9 +1,3 @@
-'''
-Created on May 26, 2009
-
-@author: vbuell
-'''
-
 class Singleton(object):
     obj = None
     def __new__(cls,*dt,**mp):

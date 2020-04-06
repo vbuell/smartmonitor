@@ -1,6 +1,3 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-
 import json
 import logging
 import re
@@ -38,27 +35,6 @@ class Storage(object):
                 if idx == len(lines) - 1:
                     self.last_timestamp = dt
                 entries.append(obj)
-            except ValueError as e:
-                logging.exception(e)
-
-        return entries
-    
-    def getLastEntriesWithResultOld(self, number_of_entries):
-        """Read last n entries from the storage file."""
-        entries = []
-        self.file.seek(0)
-        lines = self.file.readlines()
-        
-        if len(lines) < number_of_entries:
-            number_of_entries = len(lines)
-        
-        for idx in range(len(lines) - number_of_entries, len(lines)):
-            line = lines[idx].strip()
-            try:
-                obj, dt, var_xxx, stat = self.line_to_obj(line)
-                if idx == len(lines) - 1:
-                    self.last_timestamp = dt
-                entries.append((obj, dt, var_xxx))
             except ValueError as e:
                 logging.exception(e)
 

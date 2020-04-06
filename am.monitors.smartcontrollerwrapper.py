@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-__author__ = "vbuell"
-__date__ = "$May 14, 2009 2:24:59 PM$"
-
 import warnings
 warnings.simplefilter('ignore', DeprecationWarning)
 
