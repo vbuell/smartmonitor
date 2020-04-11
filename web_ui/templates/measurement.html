@@ -5,19 +5,7 @@
 {% block page_title %}Measurement: <a href="/mtop/monitor/{{ mon_id }}/">{{ mon_id }}</a> :: {{ mes_id }}{% endblock %}
 
 {% block head_additions %}
-    <script type="text/javascript" src="/static/swfobject.js"></script>
     <script type="text/javascript" src="/static/jquery-1.3.2.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() { 
-	$("span.spoiler").hide();
-	$('<a class="reveal">&nbsp;&nbsp;(Click to show)</a>').insertBefore('.spoiler');
-	$("a.reveal").click(function(){
-		$(this).parents("p").children("span.spoiler").fadeIn(2500);
-		$(this).parents("p").children("a.reveal").fadeOut(600);
-	});
-});
-
-</script>
 {% endblock %}
 
 {% block sidebar_search %}{% endblock %}
@@ -40,12 +28,7 @@ $(document).ready(function() {
         <span class="chart" id="{{measurement.name}}"></span><br>
         <font color="#909090">{{measurement.csv}}</font>
         
-        <script type="text/javascript">
-        swfobject.embedSWF(
-          "/static/open-flash-chart.swf", "{{measurement.name}}",
-          "600", "200", "9.0.0", "/static/expressInstall.swf",
-          {"data-file":"/data?data={{measurement.csv}}%26max={{measurement.max_value}}%26title={{measurement.name}}%26cri=12.6"} );
-    	</script>
+        </script>
         
         <br>
         <br>
