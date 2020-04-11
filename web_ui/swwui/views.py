@@ -7,7 +7,6 @@ import json # 2.6
 
 from django.http import HttpResponse
 from django.template import loader
-from .pyofc2 import *
 
 datadir = os.path.dirname(sys.argv[0])
 if not datadir:
