@@ -30,7 +30,11 @@ USE_I18N = True
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'static')
-MEDIA_URL = '/static/'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+  os.path.join(PROJECT_PATH, 'static/'),
+)
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -65,5 +69,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     # 'django.contrib.admin',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
 #    'django_extensions',
 )

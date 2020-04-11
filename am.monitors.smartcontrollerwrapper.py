@@ -363,8 +363,6 @@ class SmartWrapper(object):
 
             self.store_to_datastore(self.configuration.state_variables, self.lowest_result, None)
             
-#            storage.appendHealthInfoToLastEntry(self.lowest_result)
-    
             # Generate "fake" output file
             self.write_output_and_exit(self.generate_output_file())
             

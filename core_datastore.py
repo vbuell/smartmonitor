@@ -15,7 +15,6 @@ class Storage(object):
     def __init__(self, filename):
         """Constructor."""
         self.file = open(filename, 'a+')
-        self.filestat = open(filename + ".stat", 'a+')
         self.last_timestamp = None
         self.re_pattern_entry = re.compile(r"^(.+) (-?\d+)hu( ([A-Z]+))?$")
 
@@ -31,7 +30,7 @@ class Storage(object):
         for idx in range(len(lines) - number_of_entries, len(lines)):
             line = lines[idx].strip()
             try:
-                obj, dt, var_xxx, stat = self.line_to_obj(line)
+                obj, dt, var_xxx, stat = self._line_to_obj(line)
                 if idx == len(lines) - 1:
                     self.last_timestamp = dt
                 entries.append(obj)
@@ -52,7 +51,7 @@ class Storage(object):
         for idx in range(len(lines) - number_of_entries, len(lines)):
             line = lines[idx].strip()
             try:
-                obj, dt, var_xxx, stat = self.line_to_obj(line, do_json)
+                obj, dt, var_xxx, stat = self._line_to_obj(line, do_json)
                 if idx == len(lines) - 1:
                     self.last_timestamp = dt
                 entries.append((obj, dt, var_xxx, stat))
@@ -68,7 +67,7 @@ class Storage(object):
         for line in lines:
             if line.startswith(str_dt):
 #                try:
-                    obj, dt, var_xxx, stat = self.line_to_obj(line)
+                    obj, dt, var_xxx, stat = self._line_to_obj(line)
                     return obj, dt, var_xxx, stat
 #                except ValueError, e:
 #                    logging.exception(e)
@@ -98,7 +97,7 @@ class Storage(object):
         for idx in reversed(list(range(0, len(lines)))):
             line = lines[idx].strip()
             try:
-                obj, dt, var_xxx, stat = self.line_to_obj(line)
+                obj, dt, var_xxx, stat = self._line_to_obj(line)
                 if dt > now:
                     entries.append(obj)
             except ValueError as e:
@@ -106,7 +105,7 @@ class Storage(object):
 
         return entries
     
-    def line_to_obj(self, line, do_json=True):
+    def _line_to_obj(self, line, do_json=True):
         start_idx = line.find(" ")
         dt = datetime.fromisoformat(line[0:start_idx])
         
@@ -124,14 +123,12 @@ class Storage(object):
             return None, dt, health, stat
         return json.loads(json_body), dt, health, stat
 
-    def obj_to_line(self, object, health=None, stat=None):
+    def _obj_to_line(self, object, health=None, stat=None):
 
         str_out = datetime.utcnow().isoformat() + " " 
 
         str_out += json.dumps(object)
             
-        print("HEALTH IS: ", health)
-
         if health is not None:
             str_out += " " + str(health) + "hu"
 
@@ -142,22 +139,7 @@ class Storage(object):
     
     def putEntry(self, object, health=None, stat=None):
         """Append object to the storage file."""
-        self.file.write(self.obj_to_line(object, health, stat) + "\n")
-        self.file.flush()
-        
-    def appendHealthInfoToLastEntry(self, health):
-        self.file.flush()
-        
-        # Determine position
-        try:
-            self.file.seek(-1, os.SEEK_END)
-            position = self.file.tell()
-        except AttributeError:
-            # Failover: python 2.3 doesn't have SEEK_END attribute
-            position = self.file.tell() - 1
-                
-        self.file.truncate(position)
-        self.file.write(" " + str(health) + "hu"  + "\n")
+        self.file.write(self._obj_to_line(object, health, stat) + "\n")
         self.file.flush()
         
     def _tail_lines(self, file, linesback=10):
@@ -171,7 +153,7 @@ class Storage(object):
         
         avgcharsperline = 600
     
-        while 1:
+        while True:
             try: file.seek(int(-1 * avgcharsperline * linesback),2)
             except IOError: file.seek(0)
             if file.tell() == 0: atstart=1
@@ -180,7 +162,7 @@ class Storage(object):
             lines=file.read().split("\n")
             if (len(lines) > (linesback+1)) or atstart: break
             #The lines are bigger than we thought
-            avgcharsperline=avgcharsperline * 1.3 #Inc avg for retry
+            avgcharsperline=avgcharsperline * 2 # Inc avg for retry
 #        file.close()
     
         if len(lines) > linesback: 
@@ -188,40 +170,6 @@ class Storage(object):
         else: 
             start = 0
         return lines[start:len(lines)-1]
-
-
-class ExtendedStorage(object):
-
-    def putStat(self, phase):
-        self.filestat.write(str(datetime.utcnow().strftime(DATETIME_FORMAT)) + \
-                            " " + str(phase) + "\n")
-        self.filestat.flush()
-
-    def modifyStat(self, phase):
-        self.filestat.flush()
-        try:
-            self.filestat.seek(-2, os.SEEK_END)
-            position = self.filestat.tell()
-        except AttributeError:
-            # Failover: python 2.3 doesn't have SEEK_END attribute
-            position = self.filestat.tell() - 2
-                
-        self.filestat.truncate(position)
-        self.filestat.write(str(phase) + "\n")
-        self.filestat.flush()
-
-    def commitStat(self, phase, health, description):
-        self.filestat.flush()
-        try:
-            self.filestat.seek(-2, os.SEEK_END)
-            position = self.filestat.tell()
-        except AttributeError:
-            # Failover: python 2.3 doesn't have SEEK_END attribute
-            position = self.filestat.tell() - 2
-                
-        self.filestat.truncate(position)
-        self.filestat.write(str(phase) + " " + str(health) + "hu"  + "\n")
-        self.filestat.flush()
 
 
 class DataStore(object):

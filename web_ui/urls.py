@@ -6,8 +6,8 @@ from swwui.views import main, monitor, measurement, tick, doc, rawout
 
 urlpatterns = [
     # url('^data/$', swwui.views, name='chart_data'),
-    url(r'^mtop/$', main),
-    url(r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/$', monitor),
+    url(r'^mtop$', main),
+    url(r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)$', monitor),
     url(r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/(?P<mes_id>[.\d\w-]+)$', measurement),
     url(r'^mtop/monitor/(?P<mon_id>[.\d\w-]+)/tick/(?P<dt>[:,.\d\w-]+)$', tick),
     url(r'^mtop/doc/(?P<page>[.\d\w-]+)/$', doc),
@@ -22,4 +22,4 @@ urlpatterns = [
 
      # serve static content
     # url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-] + static(r'^static/(?P<path>.*)$', document_root=settings.MEDIA_ROOT)
+]

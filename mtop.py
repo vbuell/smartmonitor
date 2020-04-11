@@ -204,23 +204,23 @@ class MTop(object):
     def parseCommandLine(self):
         """Parse command line options."""
         parser = OptionParser(conflict_handler="resolve")
-#        parser.add_option("-l", "--log-enable", dest="log_lines", help="log files analyze enable", 
+#        parser.add_option("-l", "--log-enable", dest="log_lines", help="log files analyze enable",
 #                          default=False, action="store_true")
         parser.add_option("-n", "--log-lines", dest="log_lines",
                           help="number of lines to be printed for errors got from log files. Set to 0 to disable log analysis",
                           default="10")
-        parser.add_option("-r", "--refresh-time", dest="refresh_time", help="UI refresh time (in seconds)", 
+        parser.add_option("-r", "--refresh-time", dest="refresh_time", help="UI refresh time (in seconds)",
                           default="5")
         parser.add_option("-c", "--refresh-skip-cycles", dest="cycle_skip_for_logs",
                           help="UI refresh cycles to be skipped before heavyweight analyze operations (non-zero positive number 1,2...)",
                           default="5")
-        parser.add_option("-f", "--filter", dest="filter", help="regex pattern", 
+        parser.add_option("-f", "--filter", dest="filter", help="regex pattern",
                           default=None)
 
         # WIP
-        parser.add_option("-s", "--sort", dest="sort", help="sorting (parameter is a column, like 'i' for ID)", 
+        parser.add_option("-s", "--sort", dest="sort", help="sorting (parameter is a column, like 'i' for ID)",
                           default="i")
-        parser.add_option("-o", "--output_format", dest="output_format", help="output_format [ansi, ascii, html]", 
+        parser.add_option("-o", "--output_format", dest="output_format", help="output_format [ansi, ascii, html]",
                           default="ansi")
     
         (options, args) = parser.parse_args()
@@ -440,7 +440,6 @@ def getChar():
     fcntl.fcntl(fd, fcntl.F_SETFL, oldflags | os.O_NONBLOCK)
     
     try:
-#        while 1:
         r, w, e = select.select([fd], [], [])
         if r:
             c = sys.stdin.read(1)

@@ -2,7 +2,7 @@ import unittest
 import sys, os
 from core_eval import *
 from core_parser import *
-from core_configuration import get_configuration, SchemalessSection
+from core_configuration import get_configuration, SchemalessConfig
 from core_expressions import last
 
 
@@ -164,11 +164,6 @@ class  Test_datastore(unittest.TestCase):
         obj = storage.getLastEntriesWithResult(1)
         self.assertEqual(len(obj), 1)
         self.assertEqual(obj[0][2], 0)
-        
-        storage.appendHealthInfoToLastEntry(56)
-        obj = storage.getLastEntriesWithResult(1)
-        self.assertEqual(len(obj), 1)
-        self.assertEqual(obj[0][2], 56)
 
 
 '''
