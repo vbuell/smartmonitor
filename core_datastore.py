@@ -184,3 +184,9 @@ class DataStore(object):
             raise ValueError("name must not be None")
         return Storage(self.directory + "/" + name + ".txt")
 
+    def dropStorage(self, name):
+        """ Drop storage by name """
+        if not name:
+            raise ValueError("name must not be None")
+
+        os.remove(self.directory + "/" + name + ".txt")

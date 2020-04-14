@@ -33,7 +33,7 @@ dmMonitor.logout|23|milliseconds|OK
 '''
 Evaluator tests. See specific tests in core_eval module
 '''
-class  Test_evaluator_basic(unittest.TestCase):
+class Test_evaluator_basic(unittest.TestCase):
 
     def setUp(self):
         LOG_FILENAME = "./sFTP_monitor.out__"
@@ -68,7 +68,7 @@ class  Test_evaluator_basic(unittest.TestCase):
 '''
 Datastore tests
 '''
-class  Test_datastore(unittest.TestCase):
+class Test_datastore(unittest.TestCase):
     def setUp(self):
         LOG_FILENAME = "./sFTP_monitor.out"
         logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO)
@@ -78,32 +78,29 @@ class  Test_datastore(unittest.TestCase):
         store.setWorkingDirectory("./testdata")
 
     def test_entry_put(self):
-        datadir = os.path.dirname(sys.argv[0])
-        logging.info('sFTP monitor start')
-        logging.info('Data directory of script: ' + datadir)
-        logging.info('Working directory: ' + os.getcwd())
-
         store = DataStore()
         store.setWorkingDirectory("./testdata")
         storage = store.getStorage("test")
 
+        obj = storage.getLastEntries(10)
+        self.assertEqual(len(obj), 0)
+
         t = 12345, 54321, 'hello!'
         storage.putEntry(t, 10)
-
-        obj = storage.getLastEntries(1)
-        self.assertEqual(len(obj), 1)
-
-        obj = storage.getLastEntries(2)
-        self.assertEqual(len(obj), 2)
-
-        obj = storage.getLastEntries(3)
-        self.assertEqual(len(obj), 3)
 
         obj = storage.getLastEntries(0)
         self.assertEqual(len(obj), 0)
 
+        obj = storage.getLastEntries(1)
+        self.assertEqual(len(obj), 1)
 
-    def test_arguments(self):
+        obj = storage.getLastEntries(10)
+        self.assertEqual(len(obj), 1)
+
+        store.dropStorage("test")
+
+
+    def test_pass_none_as_storage_name(self):
         try:
             store = DataStore()
             store.setWorkingDirectory("./testdata")
@@ -121,26 +118,26 @@ class  Test_datastore(unittest.TestCase):
         obj = storage.getLastEntries(5)
         self.assertEqual(len(obj), 0)
 
+        store.dropStorage("empty")
+
 
     def test_last_time(self):
         store = DataStore()
         store.setWorkingDirectory("./testdata")
-        storage = store.getStorage("empty")
-        obj = storage.getLastEntries(5)
+        storage_empty = store.getStorage("empty")
+        obj = storage_empty.getLastEntries(5)
         self.assertEqual(len(obj), 0)
-        self.assertEqual(storage.getLastTime(), None)
+        self.assertEqual(storage_empty.getLastTime(), None)
 
-        storage = store.getStorage("test")
-        obj = storage.getLastEntries(5)
-        self.assertNotEqual(storage.getLastTime(), None)
+        storage_test = store.getStorage("test")
+        t = 12345, 54321, 'hello!'
+        storage_test.putEntry(t, 10)
 
+        obj = storage_test.getLastEntries(5)
+        self.assertNotEqual(storage_test.getLastTime(), None)
 
-    def test_new_data(self):
-        from datetime import datetime, date, time
-        dt = datetime.utcnow()
-        string = dt.strftime("%Y-%m-%d,%H:%M:%S")
-        dt = None
-        dt = datetime.strptime(string, "%Y-%m-%d,%H:%M:%S")
+        store.dropStorage("empty")
+        store.dropStorage("test")
 
 
     def test_entry_put_and_read_extended(self):
@@ -165,11 +162,13 @@ class  Test_datastore(unittest.TestCase):
         self.assertEqual(len(obj), 1)
         self.assertEqual(obj[0][2], 0)
 
+        store.dropStorage("test")
+
 
 '''
 Output parser
 '''
-class  Test_outputparser(unittest.TestCase):
+class Test_outputparser(unittest.TestCase):
 
     def setUp(self):
         LOG_FILENAME = "./sFTP_monitor.out__"
